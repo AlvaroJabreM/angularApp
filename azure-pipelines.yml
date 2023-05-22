@@ -1,29 +1,25 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+name: 1.0$(Rev:.r)
 
+# simplified trigger (implied branch)
 trigger:
-- master
 
-resources:
-- repo: self
+- main
+
+# equivalents trigger
+# trigger:
+#  branches:
+#    include:
+#    - main
 
 variables:
-  tag: '$(Build.BuildId)'
+  name: John
 
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        tags: |
-          $(tag)
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+
+- job: helloworld
+  steps:
+    - checkout: self
+    - script: echo "Hello, $(name)"
